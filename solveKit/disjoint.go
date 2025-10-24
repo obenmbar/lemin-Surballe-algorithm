@@ -19,35 +19,28 @@ func FindDisjointPaths(start, end *parsekit.Room) [][]*parsekit.Room {
 		// roomPtr is *parsekit.Room
 		neighbors := make([]*parsekit.Room, len(roomPtr.Link))
 		copy(neighbors, roomPtr.Link)
-		tempGraph[roomPtr] = neighbors // key is *Room, not name
+		tempGraph[roomPtr] = neighbors
 	}
 
 	for {
 		path := BFS(tempGraph, start, end)
 		if path == nil {
-			break // no more paths
+			break
 		}
 
 		allPaths = append(allPaths, path)
 
-		// Remove INTERMEDIATE nodes from tempGraph (keep start and end!)
 		for i := 1; i < len(path)-1; i++ {
 			node := path[i]
 			delete(tempGraph, node)
 
-			// Also remove this node from all neighbors' adjacency lists
 			for _, neighbors := range tempGraph {
 				for j := 0; j < len(neighbors); j++ {
 					if neighbors[j] == node {
-						// Remove element at j
 						neighbors = append(neighbors[:j], neighbors[j+1:]...)
-						j-- // recheck same index
+						j--
 					}
 				}
-				// Update the slice in map (since slices are reference-like)
-				// We need to reassign because we modified a copy
-				// But in Go, modifying slice elements affects original if same backing array
-				// Safer: rebuild or use pointer to slice — but for simplicity, we accept this
 			}
 		}
 	}
