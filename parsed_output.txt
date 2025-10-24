@@ -1,0 +1,11 @@
+Ants: 3
+Start Room: 0
+End Room: 1
+
+Rooms:
+  1 (5, 0)
+  0 (1, 0)
+  2 (9, 0)
+  3 (13, 0)
+
+ Parsing completed successfully.
