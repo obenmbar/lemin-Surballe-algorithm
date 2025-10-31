@@ -98,7 +98,5 @@ func validateSpecialRooms(farm *Farm) error {
 		return fmt.Errorf("no end room found")
 	}
 
-	
-
 	return nil
 }

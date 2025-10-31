@@ -23,9 +23,11 @@ type Edge struct {
 type Path []string
 
 type Room struct {
-	Name  string
-	Coord Position
-	Links map[string]*Room
+	Name    string
+	Coord   Position
+	Links   map[string]*Room
+	Visited bool
+	Level   int
 }
 
 type Position struct {
@@ -147,7 +149,6 @@ func addTunnelToFarm(farm *Farm, from, to, line string) error {
 	}
 
 	farm.Tunnels[k1] = true
-
 	rA.Links[to] = rB
 	rB.Links[from] = rA
 

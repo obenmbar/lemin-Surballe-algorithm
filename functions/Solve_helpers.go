@@ -12,6 +12,7 @@ func findBetterChoice(best, shortest []Path, antNumber int) ([]Path, []int) {
 	if shortTurn <= turn {
 		return shortest, assignedShort
 	}
+
 	return best, assigned
 }
 
@@ -19,9 +20,6 @@ func calculateTurns(paths []Path, antNumber int) ([]int, int) {
 	sort.Slice(paths, func(i, j int) bool {
 		return len(paths[i]) < len(paths[j])
 	})
-
-	func() {
-	}()
 
 	assigned := assignAnts(paths, antNumber)
 
@@ -59,6 +57,7 @@ func reconstructPaths(links map[string][]string, start, end string, pathNumber i
 		current := start
 
 		for current != end {
+			found := false
 			for _, to := range links[current] {
 				tunnel := current + "-" + to
 
@@ -66,8 +65,13 @@ func reconstructPaths(links map[string][]string, start, end string, pathNumber i
 					used[tunnel] = true
 					path = append(path, to)
 					current = to
+					found = true
 					break
 				}
+			}
+
+			if !found {
+				break
 			}
 		}
 
@@ -122,7 +126,6 @@ func updateOneEdge(from, to string, farm *Farm) {
 
 func buildPathFromParents(parent map[string]string, start, end string) Path {
 	path := Path{}
-
 	for room := end; room != ""; room = parent[room] {
 		path = append([]string{room}, path...)
 		if room == start {

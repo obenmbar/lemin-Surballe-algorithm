@@ -22,10 +22,6 @@ func EdmondKarp(farm *Farm) ([]Path, []int) {
 		pathFound++
 	}
 
-	if len(shortest) == 0 {
-		return shortest, []int{}
-	}
-
 	best := extractPaths(farm, start, end, pathFound)
 	paths, assigned := findBetterChoice(best, shortest, farm.Antnumber)
 
