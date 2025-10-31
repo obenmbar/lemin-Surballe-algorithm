@@ -23,9 +23,9 @@ type Edge struct {
 type Path []string
 
 type Room struct {
-	Name    string
-	Coord   Position
-	Links   map[string]*Room
+	Name  string
+	Coord Position
+	Links map[string]*Room
 }
 
 type Position struct {
@@ -37,6 +37,7 @@ type Ant struct {
 	Name     string
 	Path     Path
 	Position int
+	Finished bool
 }
 
 func validateWords(words []string) error {
