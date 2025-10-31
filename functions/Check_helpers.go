@@ -6,11 +6,24 @@ import (
 )
 
 func handleSpecialComment(lines []string, idx *int, farm *Farm, foundTunnels *bool, specialType string) error {
+	var Index_start int
 	if *idx+1 >= len(lines) {
 		return fmt.Errorf("'%s' must not be the last line", specialType)
 	}
-
-	nextLine := strings.TrimSpace(lines[*idx+1])
+	for v := *idx + 1; v < len(lines); v++ {
+		value_after_end_start:= strings.TrimSpace(lines[v])
+		if value_after_end_start == "" || strings.HasPrefix(value_after_end_start, "#") {
+			if strings.TrimSpace(lines[v]) != "##start" &&  strings.TrimSpace(lines[v]) != "##end"{
+				Index_start += 1
+				continue
+			} else {
+				return fmt.Errorf("error il ya la valeur ##start directement desous de la valeur ##end ou le contraire ")
+			}
+		} else {
+			break
+		}
+	}
+	nextLine := strings.TrimSpace(lines[*idx+Index_start+1])
 
 	if msg, ok := isRoomOrTunnel(nextLine, farm, foundTunnels); !ok {
 		return fmt.Errorf("after '%s' the next line must be a valid room: %s", specialType, msg)
@@ -33,11 +46,11 @@ func handleSpecialComment(lines []string, idx *int, farm *Farm, foundTunnels *bo
 		farm.SpecialRooms["end"] = name
 	}
 
-	*idx++
+	*idx += Index_start+1
 	return nil
 }
 
-func isRoomOrTunnel(line string, farm *Farm,  foundTunnel *bool) (string, bool) {
+func isRoomOrTunnel(line string, farm *Farm, foundTunnel *bool) (string, bool) {
 	if isEmpty(line) {
 		return "line is empty", false
 	}
