@@ -84,6 +84,11 @@ func reconstructPaths(links map[string][]string, start, end string, pathNumber i
 
 func assignAnts(paths []Path, antNumber int) []int {
 	pathLen := make([]int, len(paths))
+
+	for i, path := range paths {
+		pathLen[i] = len(path)
+	}
+
 	assigned := make([]int, len(paths))
 	antsLeft := antNumber
 
@@ -102,7 +107,7 @@ func findMinLoadPath(pathLen, assigned []int) int {
 
 	for i := 1; i < len(pathLen); i++ {
 		load := pathLen[i] + assigned[i]
-		if load < lowest {
+		if load <= lowest {
 			target = i
 			lowest = load
 		}
