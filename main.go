@@ -7,6 +7,7 @@ import (
 	"tired/functions"
 )
 
+// main reads the input file, validates the farm, finds optimal paths, and simulates ant movements.
 func main() {
 	if len(os.Args) != 2 {
 		fmt.Println("usage: go run . 'fileName.txt'")
