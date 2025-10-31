@@ -10,7 +10,7 @@ func MooveAnts(paths []Path, antNumber int, data string, assigned []int) {
 	fmt.Println(strings.TrimSpace(data))
 	fmt.Println("")
 
-	ants := []Ant{}
+	ants := make([]Ant, 0)
 	finished := 0
 	ID := 1
 
@@ -21,14 +21,13 @@ func MooveAnts(paths []Path, antNumber int, data string, assigned []int) {
 			ant := &ants[i]
 			last := len(ant.Path) - 1
 
-			
 			if ant.Position < last {
 				ant.Position++
 				mooves = append(mooves, ant.Name+"-"+ant.Path[ant.Position])
 
 			}
-
-			if ant.Position == last {
+			if ant.Position == last && !ant.Finished {
+				ant.Finished = true
 				finished++
 			}
 		}
@@ -40,7 +39,6 @@ func MooveAnts(paths []Path, antNumber int, data string, assigned []int) {
 					Path:     path,
 					Position: 0,
 				}
-
 				ants = append(ants, newAnt)
 				mooves = append(mooves, newAnt.Name+"-"+newAnt.Path[0])
 				ID++
