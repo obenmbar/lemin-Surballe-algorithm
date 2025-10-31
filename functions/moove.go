@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// MooveAnts simulates the movement of ants through all paths and prints each turn.
 func MooveAnts(paths []Path, antNumber int, data string, assigned []int) {
 	fmt.Println(strings.TrimSpace(data))
 	fmt.Println("")
