@@ -1,22 +1,17 @@
 package functions
 
-import "fmt"
-
 func EdmondKarp(farm *Farm) ([]Path, []int) {
 	start := farm.SpecialRooms["start"]
 	end := farm.SpecialRooms["end"]
 	pathFound := 0
 	shortest := []Path{}
 	foundShortest := false
-	fmt.Println("")
 
 	for {
 		path := bfs(farm, start, end)
 		if path == nil {
 			break
 		}
-
-		fmt.Println("paths: ", path)
 
 		if !foundShortest {
 			shortest = append(shortest, path[1:])
@@ -26,7 +21,7 @@ func EdmondKarp(farm *Farm) ([]Path, []int) {
 		updateEdges(path, farm)
 		pathFound++
 	}
-	
+
 	if len(shortest) == 0 {
 		return shortest, []int{}
 	}
