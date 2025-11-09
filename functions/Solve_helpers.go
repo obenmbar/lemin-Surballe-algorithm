@@ -2,26 +2,14 @@ package functions
 
 import (
 	"sort"
-	"strings"
 )
 
-func findBetterChoice(best, shortest []Path, antNumber int) ([]Path, []int) {
-	assignedShort, shortTurn := calculateTurns(shortest, antNumber)
-	assigned, turn := calculateTurns(best, antNumber)
-
-	if shortTurn <= turn {
-		return shortest, assignedShort
-	}
-
-	return best, assigned
-}
-
-func calculateTurns(paths []Path, antNumber int) ([]int, int) {
+func CalculateTurns(paths []Path, antNumber int) ([]int, int) {
 	sort.Slice(paths, func(i, j int) bool {
 		return len(paths[i]) < len(paths[j])
 	})
 
-	assigned := assignAnts(paths, antNumber)
+	assigned := AssignAnts(paths, antNumber)
 
 	maxTurn := 0
 	for i := range paths {
@@ -34,55 +22,7 @@ func calculateTurns(paths []Path, antNumber int) ([]int, int) {
 	return assigned, maxTurn
 }
 
-func buildUsedLinks(farm *Farm) map[string][]string {
-	links := make(map[string][]string)
-
-	for name, edge := range farm.Edges {
-		if edge.Capacity == 0 {
-			parts := strings.Split(name, "-")
-			from, to := parts[0], parts[1]
-			links[from] = append(links[from], to)
-		}
-	}
-
-	return links
-}
-
-func reconstructPaths(links map[string][]string, start, end string, pathNumber int) []Path {
-	paths := []Path{}
-	used := make(map[string]bool)
-
-	for i := 0; i < pathNumber; i++ {
-		path := Path{start}
-		current := start
-
-		for current != end {
-			found := false
-			for _, to := range links[current] {
-				tunnel := current + "-" + to
-
-				if !used[tunnel] {
-					used[tunnel] = true
-					path = append(path, to)
-					current = to
-					found = true
-					break
-				}
-			}
-
-			if !found {
-				break
-			}
-		}
-
-		path = path[1:]
-		paths = append(paths, path)
-	}
-
-	return paths
-}
-
-func assignAnts(paths []Path, antNumber int) []int {
+func AssignAnts(paths []Path, antNumber int) []int {
 	pathLen := make([]int, len(paths))
 
 	for i, path := range paths {
@@ -93,7 +33,7 @@ func assignAnts(paths []Path, antNumber int) []int {
 	antsLeft := antNumber
 
 	for antsLeft > 0 {
-		target := findMinLoadPath(pathLen, assigned)
+		target := FindMinLoadPath(pathLen, assigned)
 		assigned[target]++
 		antsLeft--
 	}
@@ -101,7 +41,7 @@ func assignAnts(paths []Path, antNumber int) []int {
 	return assigned
 }
 
-func findMinLoadPath(pathLen, assigned []int) int {
+func FindMinLoadPath(pathLen, assigned []int) int {
 	target := 0
 	lowest := pathLen[0] + assigned[0]
 
@@ -116,41 +56,39 @@ func findMinLoadPath(pathLen, assigned []int) int {
 	return target
 }
 
-func updateOneEdge(from, to string, farm *Farm) {
-	forwardKey := from + "-" + to
-	reverseKey := to + "-" + from
-
-	forward := farm.Edges[forwardKey]
-	forward.Capacity--
-	farm.Edges[forwardKey] = forward
-
-	reverse := farm.Edges[reverseKey]
-	reverse.Capacity++
-	farm.Edges[reverseKey] = reverse
+func (queue *queue) Add(room Node) {
+	*queue = append(*queue, room)
+	sort.Slice(*queue, func(i, j int) bool {
+		return (*queue)[i].Priority < (*queue)[j].Priority
+	})
 }
 
-func buildPathFromParents(parent map[string]string, start, end string) Path {
+func (queue *queue) Poll() Node {
+	room := (*queue)[0]
+	*queue = (*queue)[1:]
+	return room
+}
+
+func buildPathfromParent(parent map[string]string, start, end string) Path {
 	path := Path{}
-	for room := end; room != ""; room = parent[room] {
-		path = append([]string{room}, path...)
-		if room == start {
+	for current := end; current != ""; current = parent[current] {
+		path = append(Path{current}, path...)
+		if current == start {
 			break
 		}
 	}
 	return path
 }
 
-func exploreNeighbors(farm *Farm, current string, visited map[string]bool, parent map[string]string, queue *[]string) {
-	for _, neighbor := range farm.Rooms[current].Links {
-		if visited[neighbor.Name] {
-			continue
-		}
-
-		edgeKey := current + "-" + neighbor.Name
-		if farm.Edges[edgeKey].Capacity > 0 {
-			visited[neighbor.Name] = true
-			parent[neighbor.Name] = current
-			*queue = append(*queue, neighbor.Name)
+func HasDuplicateRoomAcrossPaths(paths []Path) bool {
+	seen := make(map[string]int)
+	for i, path := range paths {
+		for _, room := range path[:len(path)-1] {
+			if prev, exists := seen[room]; exists && prev != i {
+				return true
+			}
+			seen[room] = i
 		}
 	}
+	return false
 }

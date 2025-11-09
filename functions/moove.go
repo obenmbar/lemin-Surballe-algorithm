@@ -2,7 +2,6 @@ package functions
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -16,7 +15,6 @@ func MooveAnts(paths []Path, antNumber int, data string, assigned []int) {
 	ID := 1
 
 	for finished < antNumber {
-		mooves := []string{}
 
 		for i := range ants {
 			ant := &ants[i]
@@ -24,7 +22,7 @@ func MooveAnts(paths []Path, antNumber int, data string, assigned []int) {
 
 			if ant.Position < last {
 				ant.Position++
-				mooves = append(mooves, ant.Name+"-"+ant.Path[ant.Position])
+				fmt.Printf("L%d-%s ", ant.Id, ant.Path[ant.Position])
 
 			}
 			if ant.Position == last && !ant.Finished {
@@ -36,19 +34,16 @@ func MooveAnts(paths []Path, antNumber int, data string, assigned []int) {
 		for i, path := range paths {
 			if assigned[i] > 0 {
 				newAnt := Ant{
-					Name:     "L" + strconv.Itoa(ID),
+					Id:       ID,
 					Path:     path,
 					Position: 0,
 				}
 				ants = append(ants, newAnt)
-				mooves = append(mooves, newAnt.Name+"-"+newAnt.Path[0])
+				fmt.Printf("L%d-%s ", newAnt.Id, newAnt.Path[0])
 				ID++
 				assigned[i]--
 			}
 		}
-
-		if len(mooves) > 0 {
-			fmt.Println(strings.Join(mooves, " "))
-		}
+		fmt.Println("")
 	}
 }

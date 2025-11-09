@@ -26,11 +26,12 @@ func main() {
 		return
 	}
 
-	paths, assigned := functions.EdmondKarp(&farm)
-	if len(paths) == 0 {
-		fmt.Println("ERROR: not a single path goes from start room to end room")
+	paths, assigned := functions.Suurballe(&farm)
+	if paths == nil {
+		fmt.Println("not solvable")
 		return
 	}
 
 	functions.MooveAnts(paths, farm.Antnumber, string(data), assigned)
+
 }

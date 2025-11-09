@@ -15,19 +15,18 @@ type Farm struct {
 }
 
 type Edge struct {
-	From     string
-	To       string
-	Capacity int
+	From  string
+	To    string
+	State int
 }
 
 type Path []string
 
 type Room struct {
-	Name    string
-	Coord   Position
-	Links   map[string]*Room
-	Visited bool
-	Level   int
+	Name   string
+	Coord  Position
+	Links  []*Room
+	Inpath bool
 }
 
 type Position struct {
@@ -36,7 +35,7 @@ type Position struct {
 }
 
 type Ant struct {
-	Name     string
+	Id       int
 	Path     Path
 	Position int
 	Finished bool
@@ -92,7 +91,7 @@ func addRoomToFarm(farm *Farm, name string, x, y int) error {
 	room := &Room{
 		Name:  name,
 		Coord: Position{X: x, Y: y},
-		Links: make(map[string]*Room),
+		Links: []*Room{},
 	}
 
 	farm.Rooms[name] = room
@@ -149,11 +148,20 @@ func addTunnelToFarm(farm *Farm, from, to, line string) error {
 	}
 
 	farm.Tunnels[k1] = true
-	rA.Links[to] = rB
-	rB.Links[from] = rA
+	rA.Links = append(rA.Links, rB)
+	rB.Links = append(rB.Links, rA)
 
-	farm.Edges[k1] = Edge{From: from, To: to, Capacity: 1}
-	farm.Edges[k2] = Edge{From: to, To: from, Capacity: 1}
+	farm.Edges[k1] = Edge{
+		From:  from,
+		To:    to,
+		State: 1,
+	}
+
+	farm.Edges[k2] = Edge{
+		From:  to,
+		To:    from,
+		State: 1,
+	}
 
 	return nil
 }
