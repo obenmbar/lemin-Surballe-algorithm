@@ -119,7 +119,7 @@ func UpdateGraph(farm *Farm, path Path) {
 	}
 }
 
-// FindPaths runs Dijkstra'’'s algorithm to get the shortest available path.
+// FindPaths runs Dijkstra's algorithm to get the shortest available path.
 func FindPaths(farm *Farm, start, end string) Path {
 	dist, parent := Dijkstra(farm, start, end)
 
