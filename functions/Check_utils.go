@@ -17,7 +17,7 @@ type Farm struct {
 type Edge struct {
 	From  string
 	To    string
-	State int
+	State int // 1 for normal, 0 for blocked and -1 for reversed
 }
 
 type Path []string

@@ -28,10 +28,9 @@ func main() {
 
 	paths, assigned := functions.Suurballe(&farm)
 	if paths == nil {
-		fmt.Println("not solvable")
+		fmt.Println("no paths links start room and end room")
 		return
 	}
 
 	functions.MooveAnts(paths, farm.Antnumber, string(data), assigned)
-
 }

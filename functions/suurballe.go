@@ -1,7 +1,6 @@
 package functions
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -45,12 +44,12 @@ func Suurballe(farm *Farm) ([]Path, []int) {
 	return best, assigned
 }
 
-// MergePaths keeps finding valid disjoint paths using DFS until none remain.
+// MergePaths keeps finding valid disjoint paths using BFS until none remain.
 func MergePaths(farm *Farm, start, end string) []Path {
 	merged := []Path{}
 	for {
 
-		path := dfs(farm, start, end)
+		path := bfs(farm, start, end)
 		if path == nil {
 			break
 		}
@@ -137,11 +136,8 @@ func findBetterChoice(best, shortest []Path, antNumber int) ([]Path, []int) {
 	assigned, turn := CalculateTurns(best, antNumber)
 
 	if shortTurn <= turn {
-		fmt.Println("turn: ", shortTurn)
 		return shortest, assignedShort
 	}
-
-	fmt.Println("turn: ", turn)
 
 	return best, assigned
 }

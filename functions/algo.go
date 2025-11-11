@@ -32,45 +32,6 @@ func bfs(farm *Farm, start, end string) []string {
 	return nil
 }
 
-// dfs explores possible paths from start to end using depth-first search.
-func dfs(farm *Farm, start, end string) []string {
-	current := start
-	path := []string{current}
-	visited := make(map[string]bool)
-
-	for current != end {
-		visited[current] = true
-		foundNext := false
-
-		for _, neighbor := range farm.Rooms[current].Links {
-			if visited[neighbor.Name] {
-				continue
-			}
-
-			edge := farm.Edges[current+"-"+neighbor.Name]
-
-			if edge.State != 0 {
-				continue
-			}
-
-			path = append(path, neighbor.Name)
-			current = neighbor.Name
-			foundNext = true
-			break
-		}
-
-		if !foundNext {
-			return nil
-		}
-	}
-
-	if path[len(path)-1] != end {
-		return nil
-	}
-
-	return path
-}
-
 // Dijkstra calculates shortest paths in the graph using weighted edges and returns distance and parent maps.
 func Dijkstra(farm *Farm, start, end string) (map[string]int, map[string]string) {
 	dist := make(map[string]int)
@@ -111,7 +72,7 @@ func Dijkstra(farm *Farm, start, end string) (map[string]int, map[string]string)
 				parent[neighbor.Name] = current
 				dist[neighbor.Name] = newdist
 
-				if edge.State != -1 && neighbor.Inpath {
+				if edge.State == 1 && neighbor.Inpath {
 					queue.Add(Node{Name: neighbor.Name, Priority: newdist, OnlyReverse: true})
 					continue
 
