@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// handleSpecialComment processes '##start' or '##end' lines and links them to the right room.
 func handleSpecialComment(lines []string, idx *int, farm *Farm, foundTunnels *bool, specialType string) error {
 	if *idx+1 >= len(lines) {
 		return fmt.Errorf("'%s' must not be the last line", specialType)
@@ -37,6 +38,7 @@ func handleSpecialComment(lines []string, idx *int, farm *Farm, foundTunnels *bo
 	return nil
 }
 
+// isRoomOrTunnel checks if a given line defines a room, tunnel, or something invalid.
 func isRoomOrTunnel(line string, farm *Farm,  foundTunnel *bool) (string, bool) {
 	if isEmpty(line) {
 		return "line is empty", false
