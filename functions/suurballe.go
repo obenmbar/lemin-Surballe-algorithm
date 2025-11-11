@@ -13,7 +13,7 @@ type Node struct {
 
 type queue []Node
 
-// Suurballe applies Suurballe’s algorithm to find multiple disjoint shortest paths for the ants.
+// Suurballe applies Suurballe's algorithm to find multiple disjoint shortest paths for the ants.
 func Suurballe(farm *Farm) ([]Path, []int) {
 	start := farm.SpecialRooms["start"]
 	end := farm.SpecialRooms["end"]
@@ -119,7 +119,7 @@ func UpdateGraph(farm *Farm, path Path) {
 	}
 }
 
-// FindPaths runs Dijkstra’s algorithm to get the shortest available path.
+// FindPaths runs Dijkstra'’'s algorithm to get the shortest available path.
 func FindPaths(farm *Farm, start, end string) Path {
 	dist, parent := Dijkstra(farm, start, end)
 
