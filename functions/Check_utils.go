@@ -51,7 +51,7 @@ func validateWords(words []string) error {
 	return nil
 }
 
-// validateRoomName checks that the room name doesn’t start with 'L' or contain '-'.
+// validateRoomName checks that the room name doesn't start with 'L' or contain '-'.
 func validateRoomName(name string) error {
 	if name[0] == 'L' {
 		return fmt.Errorf("from room cannot start with 'L'")
