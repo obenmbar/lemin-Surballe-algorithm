@@ -10,7 +10,8 @@
 
 ## Description
 
-This project is designed to enable us to create a digital version of an ant farm. We need to help the ants find their way through a colony of connected rooms, from the starting point to the exit. The goal is to find the shortest path and move all the ants in the minimum number of turns.
+This project simulates an ant colony navigating through interconnected rooms — from a start point to an exit — using optimized pathfinding.
+The objective is to move all ants to the end room in the minimum number of turns, while respecting movement constraints.
 
 **Repository**: [lem-in](https://learn.zone01oujda.ma/git/obenmbar/lem-in)
 
@@ -21,39 +22,41 @@ This project is designed to enable us to create a digital version of an ant farm
 
 ## Features
 
-- Efficient pathfinding algorithm using BFS (Breadth-First Search)
-- Multiple path finding and optimization
-- Handles various graph configurations and edge cases
-- Validates input format and detects invalid farms
-- Optimizes ant distribution across multiple paths
+- Efficient pathfinding using Dijkstra’s and Suurballe’s algorithms
+- Handles multiple disjoint paths and optimizes ant distribution
+- Detects and handles invalid input or malformed graphs
+- Minimizes total turns for all ants
+- Clean modular structure for clarity and testing
 
 ## Project Structure
 
 ```
 lem-in/
-├── Check_helpers.go   # Helper functions for input validation
-├── Check_utils.go     # Utility functions for checking
-├── check.go          # Main input validation logic
-├── moove.go          # Ant movement logic
-├── Solve_helpers.go  # Helper functions for solving
-├── Solve.go          # Main pathfinding algorithm
-├── go.mod            # Go module file
-└── main.go           # Entry point
+├── functions/
+│   ├── Check_helpers.go   # Helper functions for validating rooms and tunnels
+│   ├── Check_utils.go     # Utility checkers for input and syntax rules
+│   ├── Solve_helpers.go   # Helper utilities for building and linking paths
+│   ├── algo.go            # Core algorithms: BFS, Dijkstra, and path building
+│   ├── check.go           # Main parser and validator for input data
+│   ├── moove.go           # Handles ant movement turn-by-turn
+│   ├── suurballe.go       # Implements Suurballe's algorithm for path merging
+│   └── README.md          # Project documentation
+├── go.mod                 # Go module configuration
+└── main.go                # Entry point
 ```
 
 ## Algorithm
 
 The project implements:
-1. **BFS Algorithm**: Finds all possible paths from start to end
-2. **Path Optimization**: Selects the best combination of paths to minimize total turns
-3. **Ant Distribution**: Distributes ants across paths for optimal movement
+- BFS / Dijkstra — finds shortest paths through the graph
+- Suurballe’s algorithm — builds multiple edge-disjoint paths
+- Ant Distribution — assigns ants across paths to minimize total turns
 
 ## Installation
 
 ```bash
 git clone https://learn.zone01oujda.ma/git/obenmbar/lem-in.git
 cd lem-in
-go build
 ```
 
 ## Usage
@@ -88,7 +91,7 @@ L1-end_room L2-room2 L3-room1
 ...
 ```
 
-Where `Lx-roomy` represents ant number `x` moving to room `y`.
+Each Lx-roomy shows ant x moving to room y.
 
 ### Example : 
 ```bash
@@ -112,11 +115,10 @@ L3-end L4-end
 
 ## Rules
 
-- Ants start at `##start` room and must reach `##end` room
-- Only one ant per room at a time (except start and end)
-- Each turn, each ant can move to an adjacent room
-- Goal: Move all ants in minimum number of turns
-- Output must display the original input followed by ant movements
+- Ants begin in the ##start room and must reach ##end
+- One ant per room at a time (except start and end)
+- Each turn, ants may move one room forward
+- The goal is to minimize total turns
 
 ## Instructions
 
@@ -134,17 +136,16 @@ Only the following Go standard library packages are allowed:
 - `fmt`
 - `strconv`
 - `strings`
-- Other standard library packages as needed
+- `math`
 
 ## Learning Objectives
 
 This project helps us learn about:
 - Graph theory and pathfinding algorithms
-- Algorithm optimization
+- Optimizing multiple path traversal
 - Input parsing and validation
-- Efficient data structures
-- Problem-solving and algorithmic thinking
-
+- Data structure efficiency
+- Algorithmic problem solving
 ---
 
 
