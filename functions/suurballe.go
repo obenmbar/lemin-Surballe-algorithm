@@ -13,6 +13,7 @@ type Node struct {
 
 type queue []Node
 
+// Suurballe applies Suurballe’s algorithm to find multiple disjoint shortest paths for the ants.
 func Suurballe(farm *Farm) ([]Path, []int) {
 	start := farm.SpecialRooms["start"]
 	end := farm.SpecialRooms["end"]
@@ -44,6 +45,7 @@ func Suurballe(farm *Farm) ([]Path, []int) {
 	return best, assigned
 }
 
+// MergePaths keeps finding valid disjoint paths using DFS until none remain.
 func MergePaths(farm *Farm, start, end string) []Path {
 	merged := []Path{}
 	for {
@@ -60,6 +62,7 @@ func MergePaths(farm *Farm, start, end string) []Path {
 	return merged
 }
 
+// UpdateGraph updates edge states and room flags after a path is used.
 func UpdateGraph(farm *Farm, path Path) {
 	for i := range path {
 		if i == len(path)-1 {
@@ -116,6 +119,7 @@ func UpdateGraph(farm *Farm, path Path) {
 	}
 }
 
+// FindPaths runs Dijkstra’s algorithm to get the shortest available path.
 func FindPaths(farm *Farm, start, end string) Path {
 	dist, parent := Dijkstra(farm, start, end)
 
@@ -127,6 +131,7 @@ func FindPaths(farm *Farm, start, end string) Path {
 	return path
 }
 
+// findBetterChoice compares path sets and picks the one that gives fewer total turns.
 func findBetterChoice(best, shortest []Path, antNumber int) ([]Path, []int) {
 	assignedShort, shortTurn := CalculateTurns(shortest, antNumber)
 	assigned, turn := CalculateTurns(best, antNumber)
