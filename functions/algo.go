@@ -4,6 +4,7 @@ import (
 	"math"
 )
 
+// bfs finds the shortest available path between start and end using breadth-first search.
 func bfs(farm *Farm, start, end string) []string {
 	parent := map[string]string{}
 	queue := []string{start}
@@ -31,6 +32,7 @@ func bfs(farm *Farm, start, end string) []string {
 	return nil
 }
 
+// dfs explores possible paths from start to end using depth-first search.
 func dfs(farm *Farm, start, end string) []string {
 	current := start
 	path := []string{current}
@@ -69,6 +71,7 @@ func dfs(farm *Farm, start, end string) []string {
 	return path
 }
 
+// Dijkstra calculates shortest paths in the graph using weighted edges and returns distance and parent maps.
 func Dijkstra(farm *Farm, start, end string) (map[string]int, map[string]string) {
 	dist := make(map[string]int)
 	parent := make(map[string]string)
