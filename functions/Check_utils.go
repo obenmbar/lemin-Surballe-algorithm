@@ -41,7 +41,7 @@ type Ant struct {
 	Finished bool
 }
 
-// validateWords ensures there’s no extra spacing in a room definition line.
+// validateWords ensures there's no extra spacing in a room definition line.
 func validateWords(words []string) error {
 	for _, word := range words {
 		if word == "" {
