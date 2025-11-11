@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 )
+
 // handleSpecialComment processes '##start' or '%23%23end' lines and links them to the right room.
 func handleSpecialComment(lines []string, idx *int, farm *Farm, foundTunnels *bool, specialType string) error {
 	var Index_start int
@@ -49,6 +50,7 @@ func handleSpecialComment(lines []string, idx *int, farm *Farm, foundTunnels *bo
 	*idx += Index_start+1
 	return nil
 }
+
 // isRoomOrTunnel checks if a given line defines a room, tunnel, or something invalid.
 func isRoomOrTunnel(line string, farm *Farm, foundTunnel *bool) (string, bool) {
 	if isEmpty(line) {
