@@ -11,6 +11,7 @@
 ## Description
 
 This project simulates an ant colony navigating through interconnected rooms — from a start point to an exit — using optimized pathfinding.
+
 The objective is to move all ants to the end room in the minimum number of turns, while respecting movement constraints.
 
 **Repository**: [lem-in](https://learn.zone01oujda.ma/git/obenmbar/lem-in)
