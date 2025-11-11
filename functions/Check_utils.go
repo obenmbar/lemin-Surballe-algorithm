@@ -41,6 +41,7 @@ type Ant struct {
 	Finished bool
 }
 
+// validateWords ensures there’s no extra spacing in a room definition line.
 func validateWords(words []string) error {
 	for _, word := range words {
 		if word == "" {
@@ -50,6 +51,7 @@ func validateWords(words []string) error {
 	return nil
 }
 
+// validateRoomName checks that the room name doesn’t start with 'L' or contain '-'.
 func validateRoomName(name string) error {
 	if name[0] == 'L' {
 		return fmt.Errorf("from room cannot start with 'L'")
@@ -61,6 +63,7 @@ func validateRoomName(name string) error {
 	return nil
 }
 
+// parseCoordinates converts coordinate strings to positive integers and validates them.
 func parseCoordinates(xStr, yStr, line string) (int, int, error) {
 	x, err1 := strconv.Atoi(xStr)
 	y, err2 := strconv.Atoi(yStr)
@@ -76,6 +79,7 @@ func parseCoordinates(xStr, yStr, line string) (int, int, error) {
 	return x, y, nil
 }
 
+// addRoomToFarm registers a new room in the farm, ensuring no name or coord duplicates.
 func addRoomToFarm(farm *Farm, name string, x, y int) error {
 	if _, exists := farm.Rooms[name]; exists {
 		return fmt.Errorf("duplicate room: %v", name)
@@ -98,6 +102,7 @@ func addRoomToFarm(farm *Farm, name string, x, y int) error {
 	return nil
 }
 
+// handleTunnelLine validates and adds a tunnel line connecting two rooms.
 func handleTunnelLine(line string, farm *Farm, foundTunnel *bool) (string, bool) {
 	if strings.Contains(line, " ") {
 		return "tunnel format must not contain spaces", false
@@ -122,6 +127,7 @@ func handleTunnelLine(line string, farm *Farm, foundTunnel *bool) (string, bool)
 	return "", true
 }
 
+// validateTunnelRooms checks that tunnel endpoints are valid and not identical.
 func validateTunnelRooms(from, to string) error {
 	if from == "" || to == "" {
 		return fmt.Errorf("tunnel must link two valid room names")
@@ -132,6 +138,7 @@ func validateTunnelRooms(from, to string) error {
 	return nil
 }
 
+// addTunnelToFarm links two existing rooms and updates tunnels and edges maps.
 func addTunnelToFarm(farm *Farm, from, to, line string) error {
 	rA, okA := farm.Rooms[from]
 	rB, okB := farm.Rooms[to]
@@ -166,23 +173,28 @@ func addTunnelToFarm(farm *Farm, from, to, line string) error {
 	return nil
 }
 
+// isRoomLine returns true if a line defines a room with three space-separated parts.
 func isRoomLine(line string) bool {
 	words := strings.Split(line, " ")
 	return len(words) == 3
 }
 
+// isTunnelLine returns true if a line represents a tunnel between two rooms.
 func isTunnelLine(line string) bool {
 	return strings.Contains(line, "-")
 }
 
+// isComment returns true if a line starts with '#'.
 func isComment(line string) bool {
 	return len(line) > 0 && line[0] == '#'
 }
 
+// isEmpty returns true if a line is completely empty.
 func isEmpty(line string) bool {
 	return line == ""
 }
 
+// handleRoomLine validates and adds a room definition to the farm before tunnels appear.
 func handleRoomLine(line string, farm *Farm, foundTunnel *bool) (string, bool) {
 	words := strings.Split(line, " ")
 
