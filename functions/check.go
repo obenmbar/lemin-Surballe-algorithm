@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// ValidateFormat checks the input file format, parses its data, and returns a ready-to-use Farm.
 func ValidateFormat(data string) (Farm, error) {
 	if strings.TrimSpace(data) == "" {
 		return Farm{}, fmt.Errorf("the file is empty")
@@ -32,6 +33,7 @@ func ValidateFormat(data string) (Farm, error) {
 	return farm, nil
 }
 
+// initializeFarm creates an empty Farm struct with initialized maps.
 func initializeFarm() Farm {
 	return Farm{
 		Rooms:        make(map[string]*Room),
@@ -41,6 +43,7 @@ func initializeFarm() Farm {
 	}
 }
 
+// parseAntNumber reads the first valid line to set the total number of ants.
 func parseAntNumber(lines []string, farm *Farm) (int, error) {
 	startIndex := 0
 	for i, raw := range lines {
@@ -62,6 +65,7 @@ func parseAntNumber(lines []string, farm *Farm) (int, error) {
 	return startIndex, nil
 }
 
+// parseRoomsAndTunnels processes all lines to register rooms and tunnels in the farm.
 func parseRoomsAndTunnels(lines []string, startIdx int, farm *Farm, foundTunnels *bool) error {
 	for i := startIdx; i < len(lines); i++ {
 
@@ -89,6 +93,7 @@ func parseRoomsAndTunnels(lines []string, startIdx int, farm *Farm, foundTunnels
 	return nil
 }
 
+// validateSpecialRooms ensures both start and end rooms are defined.
 func validateSpecialRooms(farm *Farm) error {
 	if _, found := farm.SpecialRooms["start"]; !found {
 		return fmt.Errorf("no start room found")
